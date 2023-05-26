@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33712.159
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "server_ssh", "server_ssh\server_ssh.csproj", "{E2523E53-1329-46A2-8E1A-C8EDEA31B2A0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E2523E53-1329-46A2-8E1A-C8EDEA31B2A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2523E53-1329-46A2-8E1A-C8EDEA31B2A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2523E53-1329-46A2-8E1A-C8EDEA31B2A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2523E53-1329-46A2-8E1A-C8EDEA31B2A0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6D3FCF48-D201-463E-AA42-A8AA2FF23113}
+	EndGlobalSection
+EndGlobal
