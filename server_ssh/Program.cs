@@ -15,7 +15,7 @@ namespace server_ssh
 			);
 			SshClient ssh = new SshClient(conInfo);
 			ssh.Connect();
-			SshCommand command = ssh.RunCommand("pwd; ls -lsa"); //вывод текущей пути к текущей папке;
+			SshCommand command = ssh.RunCommand("pwd; ls -lsa"); //вывод текущего пути к текущей папке;
 																 //вывод содержимого папки
 
 			//если в Linux команда возвращает 0 - команда успешно выполнена.
