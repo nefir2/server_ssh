@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -15,7 +16,7 @@ namespace server_ssh.lib
 		{
 			DirectoryName = "Maildir";
 			ProgramPath = Assembly.GetExecutingAssembly().Location;
-			ProgramDirectory = Path.GetDirectoryName(ProgramPath) ?? String.Empty;
+			ProgramDirectory = Path.GetDirectoryName(ProgramPath) ?? String.Empty + Path.DirectorySeparatorChar;
 		}
 
 		public static void MakeMailDirectory()
@@ -40,23 +41,64 @@ namespace server_ssh.lib
 			Directory.CreateDirectory(dnew);
 			Directory.CreateDirectory(dtmp);
 		}
-		public static void GetMail(string MaildirPath, bool isRecursive, string login = "root", string ip = "localhost", int? port = null)
+		/// <summary>
+		/// downloads directory with all files inside from server into programs folder with same name.
+		/// </summary>
+		// /// <remarks>
+		// /// if directory not found, throws 
+		// /// </remarks>
+		/// <param name="MaildirPathOnServer">path to directory in the server.</param>
+		/// <param name="isRecursive">
+		/// if it's <see langword="true"/>, then it can be used to download directories with files.<br/>
+		/// else downloads file by <see cref="DownloadMail(string, string, string, int?)"/>.
+		/// </param>
+		/// <param name="login">login name for the server connection.</param>
+		/// <param name="ip">ip to the server.</param>
+		/// <param name="port">if <see langword="null"/> using default port.</param>
+		/// <returns>path to downloaded directory.</returns>
+		/// <exception cref="Exception"></exception>
+		public static string DownloadMail(string MaildirPathOnServer, bool isRecursive, string login = "root", string ip = "localhost", int? port = null) //scp -r -P 2222 buntafuji@localhost:~/Maildir ./
 		{
-			if (isRecursive)
+			try
 			{
-				if (port is null) Process.Start($"scp -r {login}@{ip}:{MaildirPath} {ProgramDirectory}");
-				else Process.Start($"scp -r -P {port} {login}@{ip}:{MaildirPath} {ProgramDirectory}");
+				if (isRecursive)
+				{
+					if (port is null) Process.Start($"scp -r {login}@{ip}:{MaildirPathOnServer} {ProgramDirectory}");
+					else Process.Start($"scp -r -P {port} {login}@{ip}:{MaildirPathOnServer} {ProgramDirectory}");
+				}
+				else DownloadMail(MaildirPathOnServer);
+				return Path.Combine(ProgramDirectory, MaildirPathOnServer);
 			}
-			else GetMail(MaildirPath);
+			catch (Win32Exception ex)
+			{
+				throw new Exception("file not found\nexception message: " + ex.Message, ex);
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message, ex);
+			}
 		}
-		public static void GetMail(string FilePath, string login = "root", string ip = "localhost", int? port = null)
+		/// <summary>
+		/// downloads file from server into programs folder with same name.
+		/// </summary>
+		/// <param name="FilePathOnServer">path to file in the server.</param>
+		/// <param name="login">login name for the server.</param>
+		/// <param name="ip">ip to the server.</param>
+		/// <param name="port">if <see langword="null"/> using default port.</param>
+		/// <returns>returns path to downloaded file.</returns>
+		/// <exception cref="Exception"></exception>
+		public static string DownloadMail(string FilePathOnServer, string login = "root", string ip = "localhost", int? port = null) //scp -P 2222 buntafuji@localhost:/home/buntafuji/Maildir/new/* ../
 		{
-			if (port is null) Process.Start($"scp {login}@{ip}:{FilePath} {ProgramDirectory}");
-			else Process.Start($"scp -P {port} {login}@{ip}:{FilePath} {ProgramDirectory}");
-		}
-		public static void ParseNamesInDir()
-		{
-
+			try
+			{
+				if (port is null) Process.Start($"scp {login}@{ip}:{FilePathOnServer} {ProgramDirectory}");
+				else Process.Start($"scp -P {port} {login}@{ip}:{FilePathOnServer} {ProgramDirectory}");
+				return Path.Combine(ProgramDirectory, FilePathOnServer);
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message, ex);
+			}
 		}
 	}
 }

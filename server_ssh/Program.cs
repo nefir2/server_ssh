@@ -1,10 +1,19 @@
 ﻿using System;
+using System.Diagnostics;
+
 using Renci.SshNet;
+using server_ssh.lib;
 namespace server_ssh
 {
 	internal static class Program
 	{
 		private static void Main()
+		{
+			string file = MailLib.DownloadMail("~/Maildir", true, "buntafuji", port: 2222);
+			Process.Start($"explorer {file}");
+			Console.WriteLine();
+		}
+		private static void ConsoleSSH()
 		{
 			using SshClient ssh = new(new("localhost", 2222, "buntafuji", new PasswordAuthenticationMethod("buntafuji", "12345678")));
 			ssh.Connect();
