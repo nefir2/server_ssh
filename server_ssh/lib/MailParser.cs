@@ -18,7 +18,7 @@ namespace server_ssh.lib
 		}
 		public static string GetFileAsString(string pathToFile)
 		{
-			string file = "";
+			string? file = null;
 			try
 			{
 				using (FileStream sf = new FileStream(pathToFile, FileMode.Open))
@@ -32,7 +32,7 @@ namespace server_ssh.lib
 			{
 				throw new Exception(ex.Message, ex);
 			}
-			if (file == "") throw new Exception("file isn't parsed.");
+			if (file is null) throw new Exception("file isn't parsed.");
 			return file;
 		}
 		private static void SetObjects()
