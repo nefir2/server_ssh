@@ -100,6 +100,6 @@ namespace server_ssh.lib
 				throw new Exception(ex.Message, ex);
 			}
 		}
-		public static string 
+		//public static string SSHDownloadMail() { }
 	}
 }
