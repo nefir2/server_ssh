@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-
 using Renci.SshNet;
 using server_ssh.lib;
 namespace server_ssh
@@ -9,7 +8,7 @@ namespace server_ssh
 	{
 		private static void Main()
 		{
-			string file = MailLib.DownloadMail("~/Maildir", true, "buntafuji", port: 2222);
+			string file = MailLib.SCPDownloadMail("~/Maildir", true, "buntafuji", port: 2222);
 			Process.Start($"explorer {file}");
 			Console.WriteLine();
 		}
@@ -20,7 +19,7 @@ namespace server_ssh
 			while (true)
 			{
 				string cd = Console.ReadLine() ?? "";
-				if (cd == "" || cd == string.Empty) continue;
+				if (cd == "") continue;
 				if (cd.Equals("exit", StringComparison.OrdinalIgnoreCase)) break;
 				if (cd.ToLower() == "clear")
 				{
