@@ -1,20 +1,31 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
+
 using Renci.SshNet;
 using server_ssh.lib;
 namespace server_ssh
 {
 	internal static class Program
 	{
+		private static string login = "buntafuji";
+		private static string passwd = "12345678";
+		private static string ip = "localhost";
+		private static int port = 2222;
 		private static void Main()
 		{
-			string file = MailLib.SCPDownloadMail("~/Maildir", true, "buntafuji", port: 2222);
-			Process.Start($"explorer {file}");
-			Console.WriteLine();
+			//string file = MailLib.SCPDownloadMail("~/Maildir", true, "buntafuji", port: 2222);
+			//Process.Start($"explorer {file}");
+			//Console.WriteLine($"file exists ({MailLib.SCP}): {File.Exists(MailLib.SCP)}");
+			//Process.Start($"{MailLib.SCP} -r -P 2222 buntafuji@localhost:\"~/Maildir\" \"./\"");
+			//Console.WriteLine();
+
+			ScpClient scp = new ScpClient(ip, login, passwd);
+			scp.Download();//!!!!!
 		}
 		private static void ConsoleSSH()
 		{
-			using SshClient ssh = new(new("localhost", 2222, "buntafuji", new PasswordAuthenticationMethod("buntafuji", "12345678")));
+			using SshClient ssh = new(new(ip, 2222, login, new PasswordAuthenticationMethod(login, passwd)));
 			ssh.Connect();
 			while (true)
 			{

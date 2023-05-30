@@ -12,11 +12,13 @@ namespace server_ssh.lib
 		public static string DirectoryName { get; private set; }
 		public static string ProgramPath { get; private set; }
 		public static string ProgramDirectory { get; private set; }
+		internal static string SCP { get; private set; }
 		static MailLib()
 		{
 			DirectoryName = "Maildir";
 			ProgramPath = Assembly.GetExecutingAssembly().Location;
 			ProgramDirectory = Path.GetDirectoryName(ProgramPath) ?? String.Empty;
+			SCP = Path.Combine("C:", "Program Files", "Git", "usr", "bin", "scp.exe");
 		}
 
 		public static void MakeMailDirectory()
@@ -63,8 +65,8 @@ namespace server_ssh.lib
 			{
 				if (isRecursive)
 				{
-					if (port is null) Process.Start($"scp -r {login}@{ip}:\"{MaildirPathOnServer}\" \"{ProgramDirectory}\\\"");
-					else Process.Start($"scp -r -P {port} {login}@{ip}:\"{MaildirPathOnServer}\" \"{ProgramDirectory}\\\"");
+					if (port is null) Process.Start($"{SCP} -r {login}@{ip}:\"{MaildirPathOnServer}\" \"{ProgramDirectory}\\\"");
+					else Process.Start($"{SCP} -r -P {port} {login}@{ip}:\"{MaildirPathOnServer}\" \"{ProgramDirectory}\\\"");
 				}
 				else SCPDownloadMail(MaildirPathOnServer);
 				return Path.Combine(ProgramDirectory, MaildirPathOnServer);
@@ -91,8 +93,8 @@ namespace server_ssh.lib
 		{
 			try
 			{
-				if (port is null) Process.Start($"scp {login}@{ip}:\"{FilePathOnServer}\" \"{ProgramDirectory}\\\"");
-				else Process.Start($"scp -P {port} {login}@{ip}:\"{FilePathOnServer}\" \"{ProgramDirectory}\\\"");
+				if (port is null) Process.Start($"{SCP} {login}@{ip}:\"{FilePathOnServer}\" \"{ProgramDirectory}\\\"");
+				else Process.Start($"{SCP} -P {port} {login}@{ip}:\"{FilePathOnServer}\" \"{ProgramDirectory}\\\"");
 				return Path.Combine(ProgramDirectory, FilePathOnServer);
 			}
 			catch (Exception ex)
